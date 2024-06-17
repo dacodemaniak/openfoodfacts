@@ -2,7 +2,8 @@
 .vscode
 
 # MongoData
-datas
+datas/*
+!datas/.gitkeep
 
 # Env vars
 .env

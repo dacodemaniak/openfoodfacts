@@ -33,11 +33,12 @@ cd ./openfoodfacts-mongodbdump/dump/off
 # Restore bson to target database
 echo "Rebuild database"
 mongorestore --uri="mongodb://admin:nimda@localhost:27017/?authSource=admin&authMechanism=SCRAM-SHA-256" --drop -d openfoodfacts -c products ./products.bson
+
+# Ending process
+echo "Restore job complete, removing archive folder"
+if [ -f $ARCHIVE ]; then
+    echo "Removing ${ARCHIVE_FOLDER} content"
+    rm -r $ARCHIVE_FOLDER/*
+fi
+
 echo "Process complete"
-
-
-
-
-
-
-
