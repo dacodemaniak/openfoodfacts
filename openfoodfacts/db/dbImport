@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Archive folder and file
+ARCHIVE_NAME="openfoodfacts-mongodbdump.tar.gz"
+ARCHIVE_FOLDER="./archives"
+ARCHIVE=$ARCHIVE_FOLDER/$ARCHIVE_NAME
+
+# Echoing vars
+echo "Archive name : $ARCHIVE_NAME"
+echo "Archive folder : $ARCHIVE_FOLDER"
+echo "Archive full path : $ARCHIVE"
+
+
+# MongoDump uri
+OPENFOODFACTS_URI="https://static.openfoodfacts.org/data/openfoodfacts-mongodbdump.tar.gz"
+
+# Remove eventually pre stored dump archive from archives folder
+if [ -f $ARCHIVE ]; then
+    echo "Removing ${ARCHIVE_FOLDER} content"
+    rm -r $ARCHIVE_FOLDER/*
+fi
+
+# Download archive into ARCHIVE_FOLDER
+echo "Download $OPENFOODFACTS_URI to $ARCHIVE_FOLDER"
+cd $ARCHIVE_FOLDER
+wget $OPENFOODFACTS_URI
+
+# Unzip archive
+echo "Unzip archive ${ARCHIVE_NAME}"
+tar -xvzf $ARCHIVE_NAME
+cd ./openfoodfacts-mongodbdump/dump/off
+
+# Restore bson to target database
+echo "Rebuild database"
+mongorestore --uri="mongodb://admin:nimda@localhost:27017/?authSource=admin&authMechanism=SCRAM-SHA-256" --drop -d openfoodfacts -c products ./products.bson
+echo "Process complete"
+
+
+
+
+
+
+

@@ -1,0 +1,8 @@
+# vscode
+.vscode
+
+# MongoData
+datas
+
+# Env vars
+.env
