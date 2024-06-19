@@ -1,9 +1,13 @@
 #!/bin/bash
 
 # Archive folder and file
-ARCHIVE_NAME="openfoodfacts-mongodbdump.tar.gz"
+ARCHIVE_NAME="openfoodfacts-mongodbdump.gz"
 ARCHIVE_FOLDER="./archives"
 ARCHIVE=$ARCHIVE_FOLDER/$ARCHIVE_NAME
+DUMP_FILE="openfoodfacts-mongodbdump"
+CHECKSUM_VALUE="628e8bd6d46a183388c2568c4a16ed865f316e28537a39c4dc03e5cd9f76efd2"
+CHECKSUM_URI="https://static.openfoodfacts.org/data/gz-sha256sum"
+CHECKSUM_FILE="gz-sha256sum"
 
 # Echoing vars
 echo "Archive name : $ARCHIVE_NAME"
@@ -12,7 +16,7 @@ echo "Archive full path : $ARCHIVE"
 
 
 # MongoDump uri
-OPENFOODFACTS_URI="https://static.openfoodfacts.org/data/openfoodfacts-mongodbdump.tar.gz"
+OPENFOODFACTS_URI="https://static.openfoodfacts.org/data/openfoodfacts-mongodbdump.gz"
 
 # Remove eventually pre stored dump archive from archives folder
 if [ -f $ARCHIVE ]; then
@@ -24,21 +28,27 @@ fi
 echo "Download $OPENFOODFACTS_URI to $ARCHIVE_FOLDER"
 cd $ARCHIVE_FOLDER
 wget $OPENFOODFACTS_URI
+wget $CHECKSUM_URI
 
-# Unzip archive
-echo "Unzip archive ${ARCHIVE_NAME}"
-tar -xvzf $ARCHIVE_NAME
-cd ./openfoodfacts-mongodbdump/dump/off
 
-# Restore bson to target database
-echo "Rebuild database"
-mongorestore --uri="mongodb://admin:nimda@localhost:27017/?authSource=admin&authMechanism=SCRAM-SHA-256" --drop -d openfoodfacts -c products ./products.bson
+# Checksum and Unzip archive
+sha256sum -c "$CHECKSUM_FILE"
+STATUS=$?
+if [ $STATUS -eq 0 ]; then
+    # Restore gzip to target database
+    echo "Rebuild database from archive ${ARCHIVE_NAME}"
+    mongorestore --uri="mongodb://admin:nimda@localhost:27017/?authSource=admin&authMechanism=SCRAM-SHA-256" --drop --archive=./${ARCHIVE_NAME} --gzip
 
-# Ending process
-echo "Restore job complete, removing archive folder"
-if [ -f $ARCHIVE ]; then
-    echo "Removing ${ARCHIVE_FOLDER} content"
-    rm -r $ARCHIVE_FOLDER/*
+    # Ending process
+    echo "Restore job complete, removing archive folder"
+    if [ -f $ARCHIVE ]; then
+        echo "Removing ${ARCHIVE_FOLDER} content"
+        cd ..
+        rm -r $ARCHIVE_FOLDER/*
+    fi
+else 
+    echo "Checksum failed"
 fi
 
 echo "Process complete"
+

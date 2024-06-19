@@ -1,0 +1,3 @@
+# MongoDB datas
+datas/*
+!datas/.gitkeep

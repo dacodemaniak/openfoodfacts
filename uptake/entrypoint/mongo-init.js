@@ -1,12 +1,12 @@
-db = db.getSiblingDB('off')
+db = db.getSiblingDB('uptake')
 
 db.createUser({
-    user: 'off_admin',
+    user: 'uptake_admin',
     pwd: 'admin',
     roles: [
         {
             role: 'dbOwner',
-            db: 'off'
+            db: 'uptake'
         }
     ],
     mechanisms: ['SCRAM-SHA-256']

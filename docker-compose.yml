@@ -1,7 +1,7 @@
 services: 
-  mongodb: 
-    container_name: openfoodfacts
-    image: mongo:latest
+  off-db: 
+    container_name: off-db
+    image: mongo:4
     restart: unless-stopped
     ports: 
       - 27018:27017
@@ -9,3 +9,21 @@ services:
     volumes: 
       - ./openfoodfacts/entrypoint/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       - ./openfoodfacts/db:/openfoodfacts
+    networks:
+      - bigdata-network
+  uptake: 
+    container_name: uptake
+    restart: unless-stopped
+    build: 
+      context: ./uptake
+    volumes:
+      - ./uptake/app:/app
+      - ./uptake/datas:/data/dump
+      - ./uptake/entrypoint/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - 27019:27017
+    networks:
+      - bigdata-network
+networks:
+  bigdata-network: 
+    driver: bridge

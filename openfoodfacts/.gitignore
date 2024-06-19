@@ -1,0 +1,2 @@
+db/archives/*
+!db/archives/.gitkeep
