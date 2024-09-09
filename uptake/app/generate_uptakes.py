@@ -4,7 +4,7 @@ import bson
 from pymongo import MongoClient
 
 families_count=10000
-num_records=100000
+num_records=500000
 
 # Fonction pour générer des coordonnées aléatoires en France
 def generate_random_coords():
@@ -14,7 +14,7 @@ def generate_random_coords():
 
 # Générer une liste de familles avec des coordonnées
 families = [
-    {"familyId": i, "coords": generate_random_coords()} for i in range(1, families_count + 1)
+    {"familyId": i, "coords": generate_random_coords(), "composition": random.randint(1, 6)} for i in range(1, families_count + 1)
 ]
 
 # Connect to docker openfoodfacts service

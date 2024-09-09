@@ -24,6 +24,13 @@ services:
       - 27019:27017
     networks:
       - bigdata-network
+  spark:
+    container_name: spark-py
+    image: apache/spark-py:latest
+    volumes:
+      - ./spark/datas:/var/data
+    networks:
+      - bigdata-network
 networks:
   bigdata-network: 
     driver: bridge
