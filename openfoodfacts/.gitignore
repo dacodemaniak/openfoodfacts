@@ -1,2 +1,5 @@
-db/archives/*
-!db/archives/.gitkeep
+datas/*
+!datas/.gitkeep
+
+restore/archives/*
+!restore/archives/.gitkeep

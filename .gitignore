@@ -5,5 +5,9 @@
 datas/*
 !datas/.gitkeep
 
+# Restore
+restore/archives/*
+!restore/archives/.gitkeep
+
 # Env vars
 .env

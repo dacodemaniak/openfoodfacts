@@ -8,7 +8,8 @@ services:
     env_file: .env
     volumes: 
       - ./openfoodfacts/entrypoint/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-      - ./openfoodfacts/db:/openfoodfacts
+      - ./openfoodfacts/datas:/data/db
+      - ./openfoodfacts/restore:/restore
     networks:
       - bigdata-network
   uptake: 
@@ -26,9 +27,11 @@ services:
       - bigdata-network
   spark:
     container_name: spark-py
-    image: apache/spark-py:latest
+    build: 
+      context: ./spark
     volumes:
       - ./spark/datas:/var/data
+      - ./spark/app/generate_uptakes.py:/opt/spark-apps/generate_uptakes.py
     networks:
       - bigdata-network
 networks:
