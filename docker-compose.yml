@@ -20,6 +20,7 @@ services:
     volumes:
       - ./uptake/app:/app
       - ./uptake/datas:/data/dump
+      - ./uptake/mongo:/data/db
       - ./uptake/entrypoint/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     ports:
       - 27019:27017

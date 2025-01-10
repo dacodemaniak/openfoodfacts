@@ -13,13 +13,15 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 # Extraire les données des produits
-produits_df = spark.read.format("mongo") \
+produits_df = spark.read.format("mongodb") \
+    .option("connection.uri", off) \
     .option("database", "off") \
     .option("collection", "products") \
     .load()
 
 # Extraire les données des mouvements de stock
-mouvements_df = spark.read.format("mongo") \
+mouvements_df = spark.read.format("mongodb") \
+    .option("connection.uri", off) \
     .option("database", "uptake") \
     .option("collection", "uptakes") \
     .load()

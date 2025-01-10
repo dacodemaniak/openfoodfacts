@@ -1,3 +1,6 @@
 # MongoDB datas
 datas/*
 !datas/.gitkeep
+
+mongo/*
+!mongo/.gitkeep

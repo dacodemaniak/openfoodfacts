@@ -8,6 +8,8 @@ RUN pip3 install pyspark pymongo
 
 # Connectors installation _2.12:10.4.0
 RUN wget https://repo1.maven.org/maven2/org/mongodb/spark/mongo-spark-connector_2.12/10.4.0/mongo-spark-connector_2.12-10.4.0.jar -P /opt/spark/jars/
+RUN wget https://repo1.maven.org/maven2/org/mongodb/bson/4.11.0/bson-4.11.0.jar -P /opt/spark/jars/
+RUN wget https://repo1.maven.org/maven2/org/mongodb/mongodb-driver-core/4.11.0/mongodb-driver-core-4.11.0.jar -P /opt/spark/jars/
 
 # Download and install Apache Spark
 RUN wget https://downloads.apache.org/spark/spark-3.5.2/spark-3.5.2-bin-hadoop3.tgz
@@ -24,4 +26,4 @@ ENV PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
 # Copy py script
 COPY app/extract_and_merge.py /opt/spark-apps/extract_and_merge.py
 
-CMD ["/opt/spark/bin/spark-submit", "--packages", "org.mongodb.spark:mongo-spark-connector_2.12:10.4.0", "/opt/spark-apps/extract_and_merge.py"]
+CMD ["/opt/spark/bin/spark-submit", "--packages", "org.mongodb.spark:mongo-spark-connector_2.12:10.4.0, org.mongodb:bson:4.11.0, org.mongodb:mongodb-driver-core:4.11.0", "/opt/spark-apps/extract_and_merge.py"]
