@@ -5,7 +5,7 @@ ARCHIVE_NAME="openfoodfacts-mongodbdump.gz"
 ARCHIVE_FOLDER="./archives"
 ARCHIVE=$ARCHIVE_FOLDER/$ARCHIVE_NAME
 DUMP_FILE="openfoodfacts-mongodbdump"
-CHECKSUM_VALUE="628e8bd6d46a183388c2568c4a16ed865f316e28537a39c4dc03e5cd9f76efd2"
+CHECKSUM_VALUE="cbb7eead5f49cc60823963f498878f44ecdf05cac431f1d92f6c09aeca0ca159"
 CHECKSUM_URI="https://static.openfoodfacts.org/data/gz-sha256sum"
 CHECKSUM_FILE="gz-sha256sum"
 
